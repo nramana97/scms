@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>positoin</title>
+    <style>
+        body{
+            height: 400px;
+            width: 400px;
+            border: solid 1px black;
+            position: relative
+            
+        }
+        .parent{
+            background-color: rgba(255, 255, 0, 0.459);
+            height: 300px;
+            width: 300px;
+            left: 3rem;
+            position: relative;
+        }
+        .one,.two,.three{
+            position: relative;
+            border: 4px solid black;
+            margin: 3px;
+            text-align:center;
+            
+        }
+        .one{
+            height: 200px;
+            width: 200px;
+            left:4rem;
+            background: #ff8d8d63;
+            z-index: 0;
+        }
+        .two{
+            height: 100px;
+            width: 100px;
+            bottom: 0;
+            background: rgba(0, 255, 255, 0.384);
+            z-index: -1;
+        }
+        .three{
+            height: 50px;
+            width: 50px;
+            z-index: -2;
+            right: 0;
+            background: rgba(255, 255, 0, 0.486);
+;
+        }
+    </style>
+
+</head>
+<body>
+    <div class="parent">
+        <div class="one">1</div>
+        <div class="two">2</div>
+        <div class="three">3</div>
+    </div>
+</body>
+</html>

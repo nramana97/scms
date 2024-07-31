@@ -1,0 +1,318 @@
+<link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="../assets/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <link href="../assets/assets/vendor/simple-datatables/style.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="../assets/assets/css/style.css" rel="stylesheet"> 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  section{
+    background:linear-gradient( 45deg,black,rgb(0, 82, 102),rgb(202, 87, 255));
+    color: white;
+    height: 100vh;
+    overflow-x: hidden;
+    padding:0.4rem 0.3rem
+  }
+  .card{
+    background-color: rgba(255, 255, 255, 0.205);
+  }
+  label{
+    color: white;
+  }
+  .datatable-input{
+    background-color: rgba(255, 255, 255, 0.205);
+    color: white;
+    outline: none;
+  }
+  td,th{
+    background-color:  rgba(255, 255, 255, 0.205) !important;
+    color: white !important;
+  }
+  tr{
+    margin-bottom: 1rem !important;
+  }
+  th>button{
+    background-color: transparent !important;
+  }
+  .datatable-selector{
+    background-color: rgba(255, 255, 255, 0.205);
+    color: white;
+    border-radius:0.2rem;
+  }
+  .row{
+    background-color: transparent;
+    color: white;
+  }
+  .datatable-sorter::before {
+    border-top-color: white !important;
+  }
+
+  .datatable-sorter::after {
+    border-bottom-color: white !important;
+  }
+  .card-title,.card-body>p{
+    text-align: center;
+    color: white;
+  }
+  .card-title{
+    font-weight: 800;
+  }
+  .datatable-bottom{
+    color: white;
+  }
+  .details{
+    background:linear-gradient( 45deg,black,rgb(0, 82, 102),rgb(202, 87, 255));
+    color: white;
+    transition: background-color 1s linear;
+  }
+  .details:hover{
+    background:linear-gradient( 45deg,rgb(0, 82, 102),rgb(202, 87, 255));
+    color: white;
+  }
+</style>
+<div class="w-full">
+  <div
+    class="modal fade"
+    id="modal_show"
+    data-bs-backdrop="true"
+    data-bs-keyboard="false"
+    tabindex="-1"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header text-indigo-50 bg-indigo-700">
+          <h1 class="modal-title text-md text-indigo-300">
+            CATEGORY:
+            <span id="detailType" class="uppercase text-indigo-100"></span>
+          </h1>
+          <button
+            type="button"
+            class="btn-close"
+            id="detailDismiss"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body bg-indigo-200">
+          <div
+            id="dateRaised"
+            class="bg-indigo-200 text-indigo-600 font-bolder"
+          ></div>
+          <hr />
+          <hr />
+          <div class="mt-2 bg-indigo-300 rounded-md px-3 py-3">
+            <p class="font-bold">Description:</p>
+            <hr />
+            <p
+              id="complaintDescription"
+              class="text-md font-medium px-2 py-3 text-indigo-800 whitespace-nowrap first-letter:uppercase"
+            ></p>
+          </div>
+        </div>
+        <div class="modal-footer justify-around px-2">
+          <button
+            type="button"
+            class="btn bg-amber-200 text-amber-700 hover:bg-amber-900 hover:text-amber-100"
+            data-bs-dismiss="modal"
+          >
+            NOT SOLVED
+          </button>
+          <button
+            type="button"
+            id="solve_confirmation"
+
+            class="btn bg-emerald-200 text-emerald-600 hover:bg-emerald-600 hover:text-emerald-100 hover:shadow"
+          >
+            SOLVED
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="section">
+  <div class="row">
+  <div class="col-lg-12">
+
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">ALERT</h5>
+        <p>The Pending complaints will appear here</p>
+        
+        <!-- Table with stripped rows -->
+        <table class="table datatable">
+          <thead>
+            <tr>
+              <th scope="col">S.No</th>
+              <th scope="col">Category</th>
+              <th scope="col">Description</th>
+              <th scope="col">Raised  On</th>
+              <th scope="col">Details</th>
+            </tr>
+          </thead>
+          <tbody  id="list-items">
+          </tbody>
+        </table>
+     
+
+      </div>
+    </div>
+
+  </div>
+</div>
+</section>
+<script>
+  const handleViewComplaint = (id) => {
+    $.ajax({
+      url: "../api/commonApi/complaintDetails.php",
+      type: "POST",
+      data: { complaintId: id },
+      beforeSend: () => {
+        window.parent.console.log("Sending....");
+      },
+      complete: () => window.parent.console.log("Completed"),
+      success: function (data) {
+        data = JSON.parse(data);
+        if (data.status) {
+          $("#detailType").html(data.CTYPE);
+          $("#dateRaised").html(
+            `<h4 class='text-indigo-900'><span class='text-indigo-600'> RAISED ON: </span>${data.RAISED_ON}</h4>`
+          );
+          $("#complaintDescription").html(data.DESCRIPTION);
+          $("#solve_confirmation").data("cid", data.CID);
+        }
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        window.parent.console.error("Ajax request failed: " + errorThrown);
+      },
+    });
+  };
+  var source = new EventSource("../api/warden_api/alerts.php");
+  source.onmessage = (e) => {
+    var data = JSON.parse(e.data);
+    window.parent.console.log(data);
+    const cont = document.getElementById("list-items");
+    
+    // Clear existing content
+    cont.innerHTML = "";
+  
+    data.forEach((e) => {
+      // Create table row
+      var row = document.createElement("tr");
+      
+      // Create and append table cells
+      var snoCell = document.createElement("th");
+      snoCell.setAttribute("scope", "row");
+      snoCell.textContent = e.SNO;
+  
+      var ctypeCell = document.createElement("td");
+      ctypeCell.textContent = e.CTYPE;
+  
+      var descriptionCell = document.createElement("td");
+      descriptionCell.textContent = e.DESCRIPTION;
+  
+      var raiseDateCell = document.createElement("td");
+      raiseDateCell.textContent = e.RAISE_DATE;
+  
+      var buttonCell = document.createElement("td");
+      var button = document.createElement("button");
+      button.id = e.CID;
+      button.setAttribute("data-bs-toggle", "modal");
+      button.setAttribute("data-bs-target", "#modal_show");
+      button.className = 'details  maxsm:px-1 px-4 py-1  rounded-sm ';
+      button.textContent = "VIEW";
+  
+      button.addEventListener("click", function (e) {
+        window.parent.console.log(e.currentTarget.id);
+        handleViewComplaint(e.currentTarget.id);
+      });
+  
+      // Append cells to the row
+      row.appendChild(snoCell);
+      row.appendChild(ctypeCell);
+      row.appendChild(descriptionCell);
+      row.appendChild(raiseDateCell);
+      buttonCell.appendChild(button);
+      row.appendChild(buttonCell);
+  
+      // Append the row to the table
+      cont.appendChild(row);
+    });
+  
+    // Clear modal content on dismiss
+    $("#detailDismiss").on("click", () => {
+      $("#detailType").html("");
+      $("#dateRaised").html("");
+      $("#complaintDescription").html("");
+    });
+  
+    // Add event listeners to dynamically created buttons
+    var delete_buttons = document.getElementsByClassName("details");
+    Array.from(delete_buttons).forEach((item) => {
+      item.addEventListener("click", (e) => {
+        handleViewComplaint(e.currentTarget.id);
+      });
+    });
+  };
+  ;
+  // function to confirm complaint solved
+  const complaintSolved = (cid) => {
+    $.ajax({
+      url: "../api/student_api/complaintSolved.php",
+      type: "POST",
+      data: { cid: cid },
+      dataType:'json',
+      beforeSend: () => {
+        // Show loading indicator here
+        console.log('conforming complaint....')
+        swal({
+          title: "CONFIRMING....",
+          cliseOnEscape: false,
+          allowOutsideClick: false,
+          button: false,
+          icon: "../imgs/loading.svg",
+        });
+      },
+      complete: () => {
+        swal.close();
+      },
+      success: function (data) {
+        console.log("confirmation done");
+        $("#detailDismiss").click();
+        swal({
+          text: data.text,
+          icon: data.icon,
+          timer: 1200,
+          button: false,
+        });
+
+      },
+      error: function (err) {
+        window.parent.console.log(err);
+      },
+    });
+  };
+  //triggering confirmation
+  $("#solve_confirmation").on("click", function () {
+    var cid = $(this).data("cid");
+    console.log(cid)
+    complaintSolved(cid);
+  });
+</script>
+<script src="../assets/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<script src="../assets/assets/vendor/simple-datatables/simple-datatables.js"></script>
+<script src="../assets/assets/vendor/tinymce/tinymce.min.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.7.2/tinymce.min.js" integrity="sha512-AHsE0IVoihNpGako20z2Tsgg77r5h9VS20XIKa+ZZ8WzzXxdbiUszgVUmXqpUE8GVUEQ88BKQqtlB/xKIY3tUg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
+<!-- Template Main JS File -->
+<script src="../assets/assets/js/main.js"></script>

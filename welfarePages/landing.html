@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>charts</title>
+    
+</script>
+</head>
+<body>
+    <html>
+        <head>
+          <script src="https://cdn.anychart.com/releases/v8/js/anychart-base.min.js"></script>
+          <script src="https://cdn.anychart.com/releases/v8/js/anychart-cartesian-3d.min.js"></script>
+          <script src="https://cdn.anychart.com/releases/v8/js/anychart-ui.min.js"></script>
+          <script src="https://cdn.anychart.com/releases/v8/js/anychart-exports.min.js"></script>
+          <link href="https://cdn.anychart.com/releases/v8/css/anychart-ui.min.css" type="text/css" rel="stylesheet">
+          <link href="https://cdn.anychart.com/releases/v8/fonts/css/anychart-font.min.css" type="text/css" rel="stylesheet">
+          <style type="text/css">
+        
+        
+            .charts_container{
+              display: flex;
+              flex-direction: row;
+              align-items: center;
+              padding: 2rem auto;
+              gap: 2rem;
+              width: 100%;
+              height: 100%;
+              margin:1rem auto;
+              justify-content: center;
+              flex-direction: row;
+              /* background-color: rgba(255, 255,  */
+
+    
+            }
+            #barchart,#piechart {
+              padding: 2rem;
+              width:20rem;
+              height: 20rem;
+              margin: 0;
+              padding: 0;
+              border-radius: 2rem;
+            }
+            body{
+              /* background:linear-gradient( 45deg,black,rgb(0, 0, 87)); */
+              background-repeat: no-repeat;
+              background-size: 100%;
+
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              overflow-x: hidden;
+              padding: 1rem;
+            }
+          
+        </style>
+        </head>
+        <body>
+          <div class="charts_container">
+          <div id="barchart"></div>
+          <div id="piechart"></div>
+        </div>
+        <div id="day_count"></div>
+        <script src="./chart_scripts.js">
+        </script>
+        </body>
+        </html>
+                        
+</body>
+</html>

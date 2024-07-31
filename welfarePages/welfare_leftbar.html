@@ -1,0 +1,62 @@
+
+
+
+--------------------------------
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Bootstrap CSS Link -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        .nav li{
+            background-color: rgba(255, 255, 255, 0.137);
+            border-radius:0.4rem;
+            transition: 1s linear;
+            font-weight: 600;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .nav li.active {
+            background:linear-gradient(34deg,rgba(255, 255, 255, 0.164),rgba(109, 184, 255, 0.377));
+            color: white;
+          }
+    </style>
+</head>
+
+<body style="height: 100vh !important;overflow-y:hidden;background-color:black">
+            <nav   style="background: black;height:max-content;" class="mt-2 fixed-top">
+                <div class="position-sticky">
+                    <ul class="nav flex-column px-1 ">
+                        <li class="nav-item mb-2" >
+                            <a class="nav-link text-light" href="./landing.html" target="content_frame">
+                                <i class="fas fa-person-booth"></i> STATS
+                            </a>
+                        </li>
+                        <li class="nav-item mb-2" >
+                            <a class="nav-link text-light" href="./Reported.html" target="content_frame">
+                                <i class="fas fa-bug"></i> REPORTED
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+</nav>
+<script>
+    var navLinks = document.querySelectorAll('.nav-item a');
+
+    // Add click event listener to each anchor element
+    navLinks.forEach(function (link) {
+      link.addEventListener('click', function () {
+        // Remove 'active' class from all other <li> elements
+        document.querySelectorAll('.nav-item').forEach(function (li) {
+          li.classList.remove('active');
+        });
+  
+        // Add 'active' class to the parent <li> element
+        this.parentNode.classList.add('active');
+      });
+    });
+</script>
+</body>
